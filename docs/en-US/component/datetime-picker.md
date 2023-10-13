@@ -63,6 +63,13 @@ datetime-picker/default-time
 
 :::
 
+## 新增
+:::demo
+
+datetime-picker/date-and-time-extend
+
+:::
+
 ## Attributes
 
 | Name                  | Description                                                                                           | Type                                             | Accepted Values                                               | Default             |

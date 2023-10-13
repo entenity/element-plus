@@ -17,6 +17,10 @@ export const basicTimeSpinnerProps = buildProps({
     type: Boolean,
     default: true,
   },
+  showMinutes: {
+    type: Boolean,
+    default: true,
+  },
   arrowControl: Boolean,
   amPmMode: {
     // 'a': am/pm; 'A': AM/PM

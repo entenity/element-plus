@@ -7,6 +7,7 @@
           :role="datetimeRole || 'start'"
           :arrow-control="arrowControl"
           :show-seconds="showSeconds"
+          :show-minutes="showMinutes"
           :am-pm-mode="amPmMode"
           :spinner-date="(parsedValue as any)"
           :disabled-hours="disabledHours"
@@ -81,6 +82,9 @@ const transitionName = computed(() => {
 })
 const showSeconds = computed(() => {
   return props.format.includes('ss')
+})
+const showMinutes = computed(() => {
+  return props.format.includes('mm')
 })
 const amPmMode = computed(() => {
   if (props.format.includes('A')) return 'A'
