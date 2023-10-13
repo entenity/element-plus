@@ -39,6 +39,7 @@
             :class="dpNs.e('editor-wrap')"
           >
             <el-input
+              ref="timePickerInput"
               :placeholder="t('el.datepicker.selectTime')"
               :model-value="visibleTime"
               size="small"
@@ -305,7 +306,12 @@ const emit = (value: Dayjs | Dayjs[], ...args: any[]) => {
   isChangeToNow.value = false
   isShortcut = false
 }
+const timePickerInput = ref()
 const handleDatePick = (value: DateTableEmits, keepOpen?: boolean) => {
+  timePickerVisible.value = false
+  if (timePickerInput.value) {
+    timePickerInput.value.blur()
+  }
   if (selectionMode.value === 'date') {
     value = value as Dayjs
     let newDate = props.parsedValue

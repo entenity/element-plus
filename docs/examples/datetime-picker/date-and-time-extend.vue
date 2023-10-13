@@ -4,9 +4,21 @@
       <span class="demonstration">Default</span>
       <el-date-picker
         v-model="value1"
+        type="datetimerange"
+        placeholder="Select date and time"
+        format="YYYY-MM-DD HH:mm"
+        value-format="YYYY-MM-DD HH:mm:ss"
+        :disabled-hours="disabledHours"
+        :disabled-minutes="disableMinutes"
+      />
+    </div>
+    <div class="block">
+      <span class="demonstration">Default</span>
+      <el-date-picker
+        v-model="value1[0]"
         type="datetime"
         placeholder="Select date and time"
-        format="YYYY-MM-DD HH"
+        format="YYYY-MM-DD HH:mm"
         value-format="YYYY-MM-DD HH:mm:ss"
         :disabled-hours="disabledHours"
         :disabled-minutes="disableMinutes"
@@ -18,7 +30,7 @@
 <script lang="ts" setup>
 import { ref, watch } from 'vue'
 
-const value1 = ref('2018-10-21 10:20:00')
+const value1 = ref(['2018-10-21 10:20:00', '2018-10-22 10:08:00'])
 const value2 = ref('')
 const value3 = ref('')
 const defaultTime = new Date(2000, 1, 1, 20, 0, 0)

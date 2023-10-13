@@ -204,15 +204,15 @@ const timePartials = computed<Record<TimeUnit, number>>(() => {
     if (!showTimeList.value['hours'].map((it) => it.key).includes(hours)) {
       hours = showTimeList.value['hours'][0].key
     }
-    isInitMinutes = true
+    isInitHours = true
   }
-  if (isShowMap.value['minutes']) {
+  if (isShowMap.value['minutes'] && !isInitMinutes) {
     if (!showTimeList.value['minutes'].map((it) => it.key).includes(hours)) {
       minutes = showTimeList.value['minutes'][0].key
     }
-    isInitHours = true
+    isInitMinutes = true
   }
-  if (isShowMap.value['seconds']) {
+  if (isShowMap.value['seconds'] && !isInitSeconds) {
     if (!showTimeList.value['seconds'].map((it) => it.key).includes(hours)) {
       seconds = showTimeList.value['seconds'][0].key
     }
@@ -418,6 +418,9 @@ const bindScrollEvent = () => {
 }
 
 onMounted(() => {
+  isInitHours = false
+  isInitMinutes = false
+  isInitSeconds = false
   nextTick(() => {
     !props.arrowControl && bindScrollEvent()
     adjustSpinners()

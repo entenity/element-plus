@@ -27,6 +27,7 @@
           <span :class="drpNs.e('editors-wrap')">
             <span :class="drpNs.e('time-picker-wrap')">
               <el-input
+                ref="minTimePickerInput"
                 size="small"
                 :disabled="rangeState.selecting"
                 :placeholder="t('el.datepicker.startDate')"
@@ -83,6 +84,7 @@
               :class="drpNs.e('time-picker-wrap')"
             >
               <el-input
+                ref="maxTimePickerInput"
                 size="small"
                 :class="drpNs.e('editor')"
                 :disabled="rangeState.selecting"
@@ -514,7 +516,8 @@ const formatEmit = (emitDayjs: Dayjs | null, index?: number) => {
   }
   return emitDayjs
 }
-
+const minTimePickerInput = ref()
+const maxTimePickerInput = ref()
 const handleRangePick = (
   val: {
     minDate: Dayjs
@@ -522,18 +525,113 @@ const handleRangePick = (
   },
   close = true
 ) => {
+  minTimePickerVisible.value = false
+  maxTimePickerVisible.value = false
+  if (minTimePickerInput.value) {
+    minTimePickerInput.value.blur()
+  }
+  if (maxTimePickerInput.value) {
+    maxTimePickerInput.value.blur()
+  }
   const min_ = val.minDate
   const max_ = val.maxDate
   const minDate_ = formatEmit(min_, 0)
   const maxDate_ = formatEmit(max_, 1)
-
   if (maxDate.value === maxDate_ && minDate.value === minDate_) {
     return
   }
   emit('calendar-change', [min_.toDate(), max_ && max_.toDate()])
   maxDate.value = maxDate_
   minDate.value = minDate_
-
+  const pr = props as any
+  const disabledArr1 = pr.disabledHours?.('date') || []
+  const disabledArr2 = pr.disabledMinutes?.(0, 'date') || []
+  let showHour = false
+  let showMinutes = false
+  if (disabledArr1 && Array.isArray(disabledArr1)) {
+    showHour = (disabledArr1 as any).show
+  }
+  if (disabledArr2 && Array.isArray(disabledArr2)) {
+    showMinutes = (disabledArr2 as any).show
+  }
+  if (showHour) {
+    if (minDate.value) {
+      minDate.value = dayjs(
+        new Date(
+          minDate.value.year(),
+          minDate.value.month(),
+          minDate.value.date(),
+          disabledArr1[0] || 0
+        )
+      )
+      leftDate.value = dayjs(
+        new Date(
+          minDate.value.year(),
+          minDate.value.month(),
+          minDate.value.date(),
+          disabledArr1[0] || 0
+        )
+      )
+    }
+    if (maxDate.value) {
+      maxDate.value = dayjs(
+        new Date(
+          maxDate.value.year(),
+          maxDate.value.month(),
+          maxDate.value.date(),
+          disabledArr1[0] || 0
+        )
+      )
+      rightDate.value = dayjs(
+        new Date(
+          maxDate.value.year(),
+          maxDate.value.month(),
+          maxDate.value.date(),
+          disabledArr1[0] || 0
+        )
+      )
+    }
+  }
+  if (showMinutes) {
+    if (minDate.value) {
+      minDate.value = dayjs(
+        new Date(
+          minDate.value.year(),
+          minDate.value.month(),
+          minDate.value.date(),
+          disabledArr1[0] || 0,
+          disabledArr2[0] || 0
+        )
+      )
+      leftDate.value = dayjs(
+        new Date(
+          minDate.value.year(),
+          minDate.value.month(),
+          minDate.value.date(),
+          disabledArr1[0] || 0
+        )
+      )
+    }
+    if (maxDate.value) {
+      maxDate.value = dayjs(
+        new Date(
+          maxDate.value.year(),
+          maxDate.value.month(),
+          maxDate.value.date(),
+          disabledArr1[0] || 0,
+          disabledArr2[0] || 0
+        )
+      )
+      rightDate.value = dayjs(
+        new Date(
+          maxDate.value.year(),
+          maxDate.value.month(),
+          maxDate.value.date(),
+          disabledArr1[0] || 0
+        )
+      )
+    }
+  }
   if (!close || showTime.value) return
   handleRangeConfirm()
 }

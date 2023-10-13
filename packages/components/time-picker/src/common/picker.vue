@@ -141,6 +141,8 @@
         :unlink-panels="unlinkPanels"
         :type="type"
         :default-value="defaultValue"
+        :disabledHours="props.disabledHours"
+        :disabledMinutes="props.disabledMinutes"
         @pick="onPick"
         @select-range="setSelectionRange"
         @set-picker-option="onSetPickerOption"
